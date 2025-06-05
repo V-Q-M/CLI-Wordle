@@ -5,7 +5,7 @@ CXX := g++
 LIBS := 
 
 # Source files
-SRCS := src/main.cpp src/utils.cpp src/terminal_input.cpp src/word_machine.cpp  src/game.cpp include/main.h include/utils.h include/terminal_input.h include/word_machine.h include/game.h
+SRCS := src/main.cpp src/utils.cpp src/terminal_input.cpp src/word_machine.cpp src/visuals.cpp  src/game.cpp include/main.h include/utils.h include/terminal_input.h include/word_machine.h include/visuals.h include/game.h
 
 # Build directory
 BUILD_DIR := build
