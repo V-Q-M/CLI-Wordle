@@ -1,0 +1,67 @@
+#include "../include/utils.h"
+#include <cstdlib> // for system()
+#include <iostream>
+#include <regex> //
+#include <termios.h>
+#include <unistd.h>
+//
+//
+// Define the constants
+const std::string WHITE = "\033[37m";
+const std::string RED = "\033[31m";
+const std::string BLUE = "\033[34m";
+const std::string GREEN = "\033[32m";
+const std::string RESET = "\033[0m";
+
+// Mutable color state
+std::string color = WHITE;
+void clear_screen() {
+
+#ifdef _WIN32
+  system("cls");
+#else
+  system("clear");
+#endif
+}
+
+std::string paint(const std::string &input, const std::string &color) {
+  return color + input + RESET;
+}
+
+void remove_colors(std::string input_array[], int size) {
+  std::regex ansi_regex(R"(\x1B\[[0-9;]*m)");
+
+  for (int i = 0; i < size; i++) {
+    input_array[i] = std::regex_replace(input_array[i], ansi_regex, "");
+  }
+}
+
+std::string array_to_representation(const std::string input[], int size) {
+  std::string result;
+
+  // TOP SIDE
+  result.append("┌───");
+  for (int i = 0; i < size - 1; i++) {
+    result.append("┬───");
+  }
+  result.append("┐");
+  result.append("\n");
+
+  // MAIN ARRAY
+  result.append("│ ");
+  for (int i = 0; i < size; i++) {
+    result.append(input[i]);
+    result.append(" │ ");
+  }
+  result.append("\n");
+
+  // BOTTOM SIDE
+  result.append("└───");
+
+  for (int i = 0; i < size - 1; i++) {
+    result.append("┴───");
+  }
+  result.append("┘");
+
+  return result;
+}
