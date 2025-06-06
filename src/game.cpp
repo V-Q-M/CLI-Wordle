@@ -80,14 +80,18 @@ void handle_input() {
     enteredWords[attemptCount][word_position] = current_key - 32;
     word_position++;
     current_key = 0; // reset key to not trigger spam
+    if (word_position != 5) {
+      enteredWords[attemptCount][word_position] = '_';
+    }
   }
 
   if (backspace_pressed) {
     backspace_pressed = false; // reset immediately
-
     if (word_position > 0) {
+      enteredWords[attemptCount][word_position] = "";
       word_position--;
-      enteredWords[attemptCount][word_position] = ""; // clear last char
+      enteredWords[attemptCount][word_position] = '_';
+      ; // clear last char
     }
   }
 
