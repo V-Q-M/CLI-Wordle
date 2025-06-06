@@ -22,4 +22,8 @@ void clear_screen();
 
 std::string array_to_representation(const std::string input[], int size);
 
+void resize_window();
+extern std::string top_margin;
+extern std::string left_margin;
+
 #endif

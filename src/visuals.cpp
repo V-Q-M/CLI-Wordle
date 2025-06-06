@@ -2,9 +2,6 @@
 #include "../include/game.hpp"
 #include "../include/utils.hpp"
 #include <iostream>
-
-#include <sys/ioctl.h>
-#include <unistd.h>
 #include <vector>
 
 const std::string vertical = "│";
@@ -27,9 +24,6 @@ const std::string vertical_sep = "│";
 const std::string horizontal_sep = "├";
 const std::string horizontal_end = "┤";
 
-std::string top_margin = "\n";
-std::string left_margin = "  ";
-
 std::vector<std::string> keys = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O",
                                  "P", "A", "S", "D", "F", "G", "H", "J", "K",
                                  "L", "Z", "X", "C", "V", "B", "N", "M"};
@@ -40,24 +34,6 @@ void paint_keys(std::string letter, std::string color) {
     if (std::string(1, clean_keys[i]) == letter) {
       keys[i] = paint(std::string(1, clean_keys[i]), color);
     }
-  }
-}
-
-void resize_window() {
-  struct winsize w;
-
-  if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == -1) {
-    std::cerr << "Failed to get terminal size.\n";
-  }
-
-  top_margin = "";
-  for (int i = 0; i < w.ws_row / 4; i++) {
-    top_margin += '\n';
-  }
-
-  left_margin = "";
-  for (int i = 0; i < w.ws_col / 2 - 12; i++) {
-    left_margin += ' ';
   }
 }
 

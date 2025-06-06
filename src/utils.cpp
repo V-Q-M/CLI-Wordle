@@ -1,6 +1,7 @@
 #include "../include/utils.hpp"
 #include <cstdlib> // for system()
-#include <regex>   //
+#include <iostream>
+#include <regex> //
 //
 //
 // Define the constants
@@ -65,4 +66,51 @@ std::string array_to_representation(const std::string input[], int size) {
   result.append("┘");
 
   return result;
+}
+
+//
+// RESIZE WINDOW
+//
+//
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <sys/ioctl.h>
+#include <unistd.h>
+#endif
+
+std::string top_margin;
+std::string left_margin;
+
+void resize_window() {
+  int rows = 24; // default fallback
+  int cols = 80;
+
+#ifdef _WIN32
+  CONSOLE_SCREEN_BUFFER_INFO csbi;
+  if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)) {
+    cols = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+  } else {
+    std::cerr << "Failed to get terminal size on Windows.\n";
+  }
+#else
+  struct winsize w;
+  if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == -1) {
+    std::cerr << "Failed to get terminal size on Unix.\n";
+  } else {
+    rows = w.ws_row;
+    cols = w.ws_col;
+  }
+#endif
+
+  top_margin = "";
+  for (int i = 0; i < rows / 4; i++) {
+    top_margin += '\n';
+  }
+
+  left_margin = "";
+  for (int i = 0; i < cols / 2 - 12; i++) {
+    left_margin += ' ';
+  }
 }
