@@ -3,6 +3,10 @@
 #include <termios.h>
 #include <unistd.h>
 
+char current_key = 0;
+bool enter_pressed = false;
+bool backspace_pressed = false;
+
 void setRawMode(bool enable) {
   static struct termios oldt, newt;
   if (enable) {
@@ -18,19 +22,29 @@ void setRawMode(bool enable) {
 void setup_input() {
 
   setRawMode(true);
-  std::cout << "Press arrow keys or wasd to move(q to quit):\n";
+  std::cout << "Press a key to start\n";
 
   // char c;
 }
 
 int update_input() {
   //
-  char c = getchar();
-  if (c == '/') { // signal exit
+  current_key = getchar();
+  if (current_key == '/') { // signal exit
     return 0;
   }
 
-  std::cout << c << " pressed\n";
+  // Detect Enter key (usually '\n' = 10)
+  if (current_key == 10 || current_key == 13) {
+    enter_pressed = true;
+  }
+
+  // Detect Backspace key (usually 127 or sometimes 8)
+  if (current_key == 127 || current_key == 8) {
+    backspace_pressed = true;
+  }
+
+  std::cout << current_key << " pressed\n";
 
   return 69; // base value
 }

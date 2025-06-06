@@ -13,38 +13,38 @@ const std::string vertical_sep = "│";
 const std::string horizontal_sep = "├";
 const std::string horizontal_end = "┤";
 
-std::vector<std::string> keys = {"q", "w", "e", "r", "t", "y", "u", "i", "o",
-                                 "p", "a", "s", "d", "f", "g", "h", "j", "k",
-                                 "l", "z", "x", "c", "v", "b", "n", "m"};
-std::string clean_keys = {"qwertyuiopasdfghjklzxcvbnm"};
+std::vector<std::string> keys = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O",
+                                 "P", "A", "S", "D", "F", "G", "H", "J", "K",
+                                 "L", "Z", "X", "C", "V", "B", "N", "M"};
+std::string clean_keys = "QWERTYUIOPASDFGHJKLZXCVBNM";
 
-std::string paint_yellow(char letter) {
+std::string paint_yellow(std::string letter) {
   for (int i = 0; i < 26; i++) {
-    if (keys[i] == std::string(1, letter)) {
+    if (keys[i] == letter) {
       keys[i] = "\033[33m" + keys[i] + "\033[0m";
     }
   }
-  return "\033[33m" + std::string(1, letter) + "\033[0m"; // Yellow
+  return "\033[33m" + letter + "\033[0m"; // Yellow
 }
 
-std::string paint_green(char letter) {
+std::string paint_green(std::string letter) {
   for (int i = 0; i < 26; i++) {
-    if (keys[i] == std::string(1, letter) || keys[i] == paint_yellow(letter)) {
+    if (keys[i] == letter || keys[i] == paint_yellow(letter)) {
       keys[i] = "\033[32m" + std::string(1, clean_keys[i]) + "\033[0m";
     }
   }
 
-  return "\033[32m" + std::string(1, letter) + "\033[0m"; // Green
+  return "\033[32m" + letter + "\033[0m"; // Green
 }
 
-void greyify(char letter) {
+std::string paint_grey(std::string letter) {
   for (int i = 0; i < 26; i++) {
-    if (keys[i] == std::string(1, letter)) {
+    if (keys[i] == letter) {
       keys[i] = "\033[72m" + keys[i] + "\033[0m";
     }
   }
 
-  // return "\033[72m" + std::string(1, letter) + "\033[0m"; // Green
+  return "\033[72m" + letter + "\033[0m"; // Gray
 }
 
 void print_keyboard() {
@@ -60,4 +60,37 @@ void print_keyboard() {
   }
   std::cout << "   " + vertical << '\n';
   std::cout << corner_bl + "─────────────────────" + corner_br << '\n';
+}
+
+void print_board(std::string entered_words[6][5]) {
+  // top border
+  std::cout << ' ' + corner_tl;
+  for (int i = 0; i < 4; i++)
+    std::cout << "───" << cross_top;
+  std::cout << "───" << corner_tr << "\n ";
+
+  // rows
+  for (int i = 0; i < 6; i++) {
+    std::cout << vertical;
+    for (int j = 0; j < 5; j++) {
+      std::string cell = entered_words[i][j];
+      std::cout << " " << (cell.empty() ? " " : cell) << " " << vertical;
+    }
+    std::cout << "\n ";
+
+    if (i < 5) {
+      std::cout << horizontal_sep;
+      for (int j = 0; j < 4; j++)
+        std::cout << "───" << cross_mid;
+      std::cout << "───" << horizontal_end << "\n ";
+    }
+  }
+
+  // bottom border
+  std::cout << corner_bl;
+  for (int i = 0; i < 4; i++)
+    std::cout << "───" << cross_bot;
+  std::cout << "───" << corner_br << "\n";
+
+  print_keyboard();
 }

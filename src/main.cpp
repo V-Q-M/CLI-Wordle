@@ -19,14 +19,14 @@
 #include <iostream>
 
 int main() {
-  setup_game();
   setup_input();
+  setup_game();
 
   while (true) {
-    if (update_input() == 0) {
+    if (update_game() == 0) {
       break;
     }
-    if (update_game() == 0) {
+    if (update_input() == 0) {
       break;
     }
   }

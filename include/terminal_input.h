@@ -4,4 +4,9 @@
 void setup_input();
 int update_input();
 void close_input();
+
+extern char current_key;
+extern bool enter_pressed;
+extern bool backspace_pressed;
+
 #endif

@@ -3,9 +3,9 @@
 #include <string>
 #include <vector>
 
-std::string paint_yellow(char letter);
-std::string paint_green(char letter);
-std::string paint_grey(char letter);
+std::string paint_yellow(std::string letter);
+std::string paint_green(std::string letter);
+std::string paint_grey(std::string letter);
 
 extern const std::string vertical;
 extern const std::string horizontal;
@@ -22,4 +22,5 @@ extern const std::string horizontal_end;
 
 void print_keyboard();
 
+void print_board(std::string entered_words[6][5]);
 #endif
