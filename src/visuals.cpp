@@ -1,5 +1,6 @@
 #include "../include/visuals.hpp"
 #include "../include/game.hpp"
+#include "../include/utils.hpp"
 #include <iostream>
 
 #include <sys/ioctl.h>
@@ -34,6 +35,14 @@ std::vector<std::string> keys = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O",
                                  "L", "Z", "X", "C", "V", "B", "N", "M"};
 std::string clean_keys = "QWERTYUIOPASDFGHJKLZXCVBNM";
 
+void paint_keys(std::string letter, std::string color) {
+  for (int i = 0; i < 26; i++) {
+    if (keys[i] == letter) {
+      keys[i] = paint(keys[i], color);
+    }
+  }
+}
+
 std::string paint_yellow(std::string letter) {
   for (int i = 0; i < 26; i++) {
     if (keys[i] == letter) {
@@ -46,7 +55,7 @@ std::string paint_yellow(std::string letter) {
 std::string paint_green(std::string letter) {
   for (int i = 0; i < 26; i++) {
     if (keys[i] == letter || keys[i] == paint_yellow(letter)) {
-      keys[i] = "\033[32m" + std::string(1, clean_keys[i]) + "\033[0m";
+      keys[i] = GREEN + std::string(1, clean_keys[i]) + RESET;
     }
   }
 
@@ -104,68 +113,90 @@ void print_keyboard() {
             << corner_bl + "─────────────────────" + corner_br << '\n';
 }
 
+void top_part(int i) {
+  for (int j = 0; j < 5; j++) {
+    switch (letter_color[i][j]) {
+    case 1:
+      std::cout << paint(corner_tl + "───" + corner_tr, GREEN);
+      break;
+    case 2:
+      std::cout << paint(corner_tl + "───" + corner_tr, YELLOW);
+      break;
+    case 3:
+      std::cout << paint(corner_tl + "───" + corner_tr, GREY);
+      break;
+    default:
+      std::cout << corner_tl + "───" + corner_tr;
+    }
+  }
+  std::cout << '\n';
+  std::cout << left_margin;
+}
+
+void middle_part(std::string entered_words[6][5], int i) {
+
+  for (int j = 0; j < 5; j++) {
+    std::string cell = entered_words[i][j];
+    switch (letter_color[i][j]) {
+    case 1:
+      std::cout << paint("│ " + (cell.empty() ? " " : cell) + " │", GREEN);
+      paint_keys(cell, GREEN);
+      break;
+    case 2:
+      std::cout << paint("│ " + (cell.empty() ? " " : cell) + " │", YELLOW);
+      paint_keys(cell, YELLOW);
+      break;
+    case 3:
+      std::cout << paint("│ " + (cell.empty() ? " " : cell) + " │", GREY);
+      paint_keys(cell, GREY);
+      break;
+    default:
+      std::cout << "│ " + (cell.empty() ? " " : cell) + " │";
+    }
+  }
+  std::cout << '\n';
+  std::cout << left_margin;
+}
+
+void bottom_part(int i) {
+
+  for (int j = 0; j < 5; j++) {
+    switch (letter_color[i][j]) {
+    case 1:
+      std::cout << paint(corner_bl + "───" + corner_br, GREEN);
+      break;
+    case 2:
+      std::cout << paint(corner_bl + "───" + corner_br, YELLOW);
+      break;
+    case 3:
+      std::cout << paint(corner_bl + "───" + corner_br, GREY);
+      break;
+    default:
+      std::cout << corner_bl + "───" + corner_br;
+    }
+  }
+  std::cout << '\n';
+}
+
 void print_board(std::string entered_words[6][5], int game_state_code) {
   resize_window();
   // top margin
   std::cout << top_margin;
 
   if (game_state_code == 1) {
-    std::cout << left_margin << "   You won!" << '\n';
+    std::cout << left_margin << "        You won!" << '\n';
   } else if (game_state_code == 2) {
     std::cout << left_margin << "  The word was: " << get_solution() << '\n';
   }
 
-  /*
-  // top border
-  std::cout << left_margin;
-  for (int i = 0; i < 5; i++)
-    std::cout << corner_tl << "───" << corner_tr;
-  std::cout << "\n ";
-
-  // rows
-  for (int i = 0; i < 6; i++) {
-    for (int j = 0; j < 5; j++) {
-      std::string cell = entered_words[i][j];
-      std::cout << vertical << " " << (cell.empty() ? " " : cell) << " "
-                << vertical;
-    }
-    std::cout << "\n ";
-
-    if (i < 5) {
-      for (int j = 0; j < 5; j++)
-        std::cout << corner_bl << "───" << corner_br;
-      std::cout << "\n ";
-      for (int j = 0; j < 5; j++)
-        std::cout << corner_tl << "───" << corner_tr;
-      std::cout << "\n ";
-    }
-  }
-
-  // bottom border
-  for (int i = 0; i < 5; i++)
-    std::cout << corner_bl << "───" << corner_br;
-  std::cout << "\n";
-*/
   for (int i = 0; i < 6; i++) {
     std::cout << left_margin;
-    for (int w = 0; w < 5; w++)
-      // top part
-      std::cout << corner_tl << "───" << corner_tr;
-    std::cout << '\n';
-    std::cout << left_margin;
+    // top part
+    top_part(i);
     // middle part
-    for (int j = 0; j < 5; j++) {
-      std::string cell = entered_words[i][j];
-      std::cout << vertical << " " << (cell.empty() ? " " : cell) << " "
-                << vertical;
-    }
-    std::cout << '\n';
-    std::cout << left_margin;
-
+    middle_part(entered_words, i);
     // bottom part
-    for (int k = 0; k < 5; k++)
-      std::cout << corner_bl << "───" << corner_br;
-    std::cout << '\n';
+    bottom_part(i);
   }
 
   print_keyboard();

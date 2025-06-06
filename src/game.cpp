@@ -1,3 +1,4 @@
+#include "../include/game.hpp"
 #include "../include/terminal_input.hpp"
 #include "../include/utils.hpp"
 #include "../include/visuals.hpp"
@@ -19,6 +20,11 @@ bool won = false;
 std::string solution;
 
 std::string enteredWords[6][5];
+
+int letter_color[6][5];
+//
+//
+//
 
 std::string attempt;
 int attemptCount = 0;
@@ -46,8 +52,9 @@ void try_guess() {
   // First pass: Green letters
   for (int i = 0; i < 5; i++) {
     if (attempt[i] == solution[i]) {
-      enteredWords[attemptCount][i] =
-          paint_green(enteredWords[attemptCount][i]);
+      //      enteredWords[attemptCount][i] =
+      // paint_green(enteredWords[attemptCount][i]);
+      letter_color[attemptCount][i] = 1;
       matchedSolution[i] = true;
       matchedAttempt[i] = true;
     }
@@ -61,15 +68,18 @@ void try_guess() {
     bool found_yellow = false;
     for (int j = 0; j < 5; j++) {
       if (!matchedSolution[j] && attempt[i] == solution[j]) {
-        enteredWords[attemptCount][i] =
-            paint_yellow(enteredWords[attemptCount][i]);
+        //        enteredWords[attemptCount][i] =
+        // paint_yellow(enteredWords[attemptCount][i]);
+        letter_color[attemptCount][i] = 2;
         matchedSolution[j] = true;
         found_yellow = true;
         break;
       }
     }
     if (!found_yellow) {
-      enteredWords[attemptCount][i] = paint_grey(enteredWords[attemptCount][i]);
+      // enteredWords[attemptCount][i] =
+      // paint_grey(enteredWords[attemptCount][i]);
+      letter_color[attemptCount][i] = 3;
     }
   }
   attempt = "";

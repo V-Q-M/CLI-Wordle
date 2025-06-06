@@ -5,9 +5,11 @@
 
 // Constant ANSI color codes
 extern const std::string WHITE;
+extern const std::string GREY;
 extern const std::string RED;
 extern const std::string BLUE;
 extern const std::string GREEN;
+extern const std::string YELLOW;
 extern const std::string RESET;
 
 // Mutable color selection

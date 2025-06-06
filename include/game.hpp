@@ -7,4 +7,6 @@ int update_game();
 
 std::string get_solution();
 
+extern int letter_color[6][5];
+
 #endif
