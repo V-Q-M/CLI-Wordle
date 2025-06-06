@@ -55,16 +55,20 @@ void try_guess() {
     if (matchedAttempt[i])
       continue; // already green
 
+    bool found_yellow = false;
     for (int j = 0; j < 5; j++) {
       if (!matchedSolution[j] && attempt[i] == solution[j]) {
         enteredWords[attemptCount][i] =
             paint_yellow(enteredWords[attemptCount][i]);
         matchedSolution[j] = true;
+        found_yellow = true;
         break;
       }
     }
+    if (!found_yellow) {
+      enteredWords[attemptCount][i] = paint_grey(enteredWords[attemptCount][i]);
+    }
   }
-
   attempt = "";
   word_position = 0;
   attemptCount++;

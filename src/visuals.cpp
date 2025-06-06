@@ -40,11 +40,11 @@ std::string paint_green(std::string letter) {
 std::string paint_grey(std::string letter) {
   for (int i = 0; i < 26; i++) {
     if (keys[i] == letter) {
-      keys[i] = "\033[72m" + keys[i] + "\033[0m";
+      keys[i] = "\033[90m" + keys[i] + "\033[0m";
     }
   }
 
-  return "\033[72m" + letter + "\033[0m"; // Gray
+  return "\033[90m" + letter + "\033[0m"; // Gray
 }
 
 void print_keyboard() {
