@@ -17,9 +17,9 @@ const std::string corner_bl = "└";
 const std::string corner_br = "┘";
                                 */
 const std::string corner_tl = "╭"; // top-left
-const std::string corner_tr = "╮"; // top-right
-const std::string corner_bl = "╰"; // bottom-left
-const std::string corner_br = "╯"; // bottom-right
+const std::string corner_tr = "╮";
+const std::string corner_bl = "╰";
+const std::string corner_br = "╯";
 const std::string cross_top = "┬";
 const std::string cross_mid = "┼";
 const std::string cross_bot = "┴";
@@ -43,44 +43,12 @@ void paint_keys(std::string letter, std::string color) {
   }
 }
 
-std::string paint_yellow(std::string letter) {
-  for (int i = 0; i < 26; i++) {
-    if (keys[i] == letter) {
-      keys[i] = "\033[33m" + keys[i] + "\033[0m";
-    }
-  }
-  return "\033[33m" + letter + "\033[0m"; // Yellow
-}
-
-std::string paint_green(std::string letter) {
-  for (int i = 0; i < 26; i++) {
-    if (keys[i] == letter || keys[i] == paint_yellow(letter)) {
-      keys[i] = GREEN + std::string(1, clean_keys[i]) + RESET;
-    }
-  }
-
-  return "\033[32m" + letter + "\033[0m"; // Green
-}
-
-std::string paint_grey(std::string letter) {
-  for (int i = 0; i < 26; i++) {
-    if (keys[i] == letter) {
-      keys[i] = "\033[90m" + keys[i] + "\033[0m";
-    }
-  }
-
-  return "\033[90m" + letter + "\033[0m"; // Gray
-}
-
 void resize_window() {
   struct winsize w;
 
   if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == -1) {
     std::cerr << "Failed to get terminal size.\n";
   }
-
-  //  std::cout << "Terminal width: " << w.ws_col << " columns\n";
-  //  std::cout << "Terminal height: " << w.ws_row << " rows\n";
 
   top_margin = "";
   for (int i = 0; i < w.ws_row / 4; i++) {
@@ -186,7 +154,7 @@ void print_board(std::string entered_words[6][5], int game_state_code) {
   if (game_state_code == 1) {
     std::cout << left_margin << "         You won!" << '\n';
   } else if (game_state_code == 2) {
-    std::cout << left_margin << "  The word was: " << get_solution() << '\n';
+    std::cout << left_margin << "   The word was: " << get_solution() << '\n';
   }
 
   for (int i = 0; i < 6; i++) {

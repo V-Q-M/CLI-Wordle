@@ -1,9 +1,6 @@
 #ifndef VISUALS_H
 #define VISUALS_H
 #include <string>
-std::string paint_yellow(std::string letter);
-std::string paint_green(std::string letter);
-std::string paint_grey(std::string letter);
 
 extern const std::string vertical;
 extern const std::string horizontal;

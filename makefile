@@ -1,6 +1,6 @@
 # Compiler and flags for Linux
 CXX := g++
-CXXFLAGS := -O2 -Wall
+CXXFLAGS := -fsanitize=address -O2 -Wall
 
 # Compiler and flags for Windows (MinGW)
 MINGW_CXX := x86_64-w64-mingw32-g++

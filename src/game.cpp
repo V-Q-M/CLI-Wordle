@@ -12,27 +12,28 @@
 int MAX_LENGTH = 5;
 int MAX_WORDS = 6;
 
-const int acceptableWordsLen = 5;
-const int possibleAnswersLen = 2;
+char cursor_char = '_';
 
 int word_position = 0;
 bool won = false;
+bool lost = false;
 std::string solution;
 
 std::string enteredWords[6][5];
 
 int letter_color[6][5];
-//
-//
-//
 
-std::string attempt;
+std::string attempt = "";
 int attemptCount = 0;
 
 void try_guess() {
   //
   for (int i = 0; i < 5; i++) {
-    attempt += std::tolower(enteredWords[attemptCount][i][0]);
+    if (!enteredWords[attemptCount][i].empty()) {
+      attempt += std::tolower(enteredWords[attemptCount][i][0]);
+    } else {
+      attempt += cursor_char; // or some sentinel char
+    }
   }
 
   if (acceptableWords.count(attempt) == 0) {
@@ -84,16 +85,22 @@ void try_guess() {
   }
   attempt = "";
   word_position = 0;
+  if (attemptCount + 1 == MAX_WORDS) {
+    lost = true;
+    return;
+  }
   attemptCount++;
+  enteredWords[attemptCount][word_position] = "_";
 }
 
 void handle_input() {
   // Display player input
-  if (current_key >= 'a' && current_key <= 'z' && word_position < 5) {
-    enteredWords[attemptCount][word_position] = current_key - 32;
-    word_position++;
+  if (current_key >= 'a' && current_key <= 'z' && word_position < MAX_LENGTH) {
+    enteredWords[attemptCount][word_position] =
+        std::string(1, current_key - 32);
     current_key = 0; // reset key to not trigger spam
-    if (word_position != 5) {
+    word_position++;
+    if (word_position < MAX_LENGTH) {
       enteredWords[attemptCount][word_position] = '_';
     }
   }
@@ -101,16 +108,17 @@ void handle_input() {
   if (backspace_pressed) {
     backspace_pressed = false; // reset immediately
     if (word_position > 0) {
-      enteredWords[attemptCount][word_position] = "";
+      if (word_position < MAX_LENGTH) {
+        enteredWords[attemptCount][word_position] = "";
+      }
       word_position--;
       enteredWords[attemptCount][word_position] = '_';
-      ; // clear last char
     }
   }
 
   if (enter_pressed) {
     enter_pressed = false;
-    if (word_position == 5) {
+    if (word_position == MAX_LENGTH) {
       try_guess();
     } else {
       std::cout << "Attempt to short." << std::endl;
@@ -140,7 +148,7 @@ int check_game_over() {
     print_board(enteredWords, won_code);
     std::cout << "You won!\n";
     return 0;
-  } else if (attemptCount == 6) {
+  } else if (lost) {
     clear_screen();
     print_board(enteredWords, lost_code);
     std::cout << "You lost! The answer was: " << solution << "\n";
