@@ -16,7 +16,9 @@
 #include "../include/game.hpp"
 #include "../include/terminal_input.hpp"
 // #include "../include/utils.hpp"
+#include <chrono>
 #include <iostream>
+#include <thread>
 
 int main() {
   setup_input();
@@ -29,6 +31,7 @@ int main() {
     if (update_input() == 0) {
       break;
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(16)); // ~60 FPS
   }
 
   std::cout << "Closing application..." << std::endl;

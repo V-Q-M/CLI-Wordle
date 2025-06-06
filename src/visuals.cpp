@@ -122,6 +122,9 @@ void bottom_part(int i) {
   std::cout << '\n';
 }
 
+int show_invalid_word_msg_for = 0;
+int show_invalid_length_msg_for = 0;
+
 void print_board(std::string entered_words[6][5], int game_state_code) {
   resize_window();
   // top margin
@@ -131,6 +134,24 @@ void print_board(std::string entered_words[6][5], int game_state_code) {
     std::cout << left_margin << "         You won!" << '\n';
   } else if (game_state_code == 2) {
     std::cout << left_margin << "   The word was: " << get_solution() << '\n';
+  } else if (invalid_word_msg) {
+    std::cout << left_margin << " Invalid word. Try again.\n";
+    if (show_invalid_word_msg_for == 1) {
+      invalid_word_msg = false;
+      show_invalid_word_msg_for = 0;
+    } else {
+      show_invalid_word_msg_for++;
+    }
+  } else if (invalid_length_msg) {
+    std::cout << left_margin << "  Attempt to short.\n";
+    if (show_invalid_length_msg_for == 1) {
+      invalid_length_msg = false;
+      show_invalid_length_msg_for = 0;
+    } else {
+      show_invalid_length_msg_for++;
+    }
+  } else {
+    std::cout << '\n'; // To block weird shifts when text is actually shown
   }
 
   for (int i = 0; i < 6; i++) {

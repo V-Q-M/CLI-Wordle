@@ -105,7 +105,7 @@ void resize_window() {
 #endif
 
   top_margin = "";
-  for (int i = 0; i < rows / 4; i++) {
+  for (int i = 0; i < rows / 5; i++) {
     top_margin += '\n';
   }
 

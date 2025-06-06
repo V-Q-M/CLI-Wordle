@@ -34,6 +34,9 @@ constexpr int GREEN_ID = 1;
 constexpr int YELLOW_ID = 2;
 constexpr int GREY_ID = 3;
 
+bool invalid_word_msg = false;
+bool invalid_length_msg = false;
+
 void try_guess() {
   //
   for (int i = 0; i < 5; i++) {
@@ -45,9 +48,8 @@ void try_guess() {
   }
 
   if (acceptableWords.count(attempt) == 0) {
-    std::cout << "Invalid word. Try again.\n";
+    invalid_word_msg = true;
     attempt = "";
-    sleep(1);
     return;
   }
 
@@ -123,8 +125,7 @@ void handle_input() {
     if (word_position == MAX_LENGTH) {
       try_guess();
     } else {
-      std::cout << "Attempt to short." << std::endl;
-      sleep(2);
+      invalid_length_msg = true;
     }
   }
 }
