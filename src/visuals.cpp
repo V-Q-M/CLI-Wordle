@@ -2,10 +2,17 @@
 #include <iostream>
 const std::string vertical = "│";
 const std::string horizontal = "─";
+
 const std::string corner_tl = "┌";
 const std::string corner_tr = "┐";
 const std::string corner_bl = "└";
 const std::string corner_br = "┘";
+/*
+const std::string corner_tl = "╭"; // top-left
+const std::string corner_tr = "╮"; // top-right
+const std::string corner_bl = "╰"; // bottom-left
+const std::string corner_br = "╯"; // bottom-right
+                                */
 const std::string cross_top = "┬";
 const std::string cross_mid = "┼";
 const std::string cross_bot = "┴";
@@ -64,33 +71,34 @@ void print_keyboard() {
 
 void print_board(std::string entered_words[6][5]) {
   // top border
-  std::cout << ' ' + corner_tl;
-  for (int i = 0; i < 4; i++)
-    std::cout << "───" << cross_top;
-  std::cout << "───" << corner_tr << "\n ";
+  std::cout << " ";
+  for (int i = 0; i < 5; i++)
+    std::cout << corner_tl << "───" << corner_tr;
+  std::cout << "\n ";
 
   // rows
   for (int i = 0; i < 6; i++) {
-    std::cout << vertical;
+    // std::cout << vertical;
     for (int j = 0; j < 5; j++) {
       std::string cell = entered_words[i][j];
-      std::cout << " " << (cell.empty() ? " " : cell) << " " << vertical;
+      std::cout << vertical << " " << (cell.empty() ? " " : cell) << " "
+                << vertical;
     }
     std::cout << "\n ";
 
     if (i < 5) {
-      std::cout << horizontal_sep;
-      for (int j = 0; j < 4; j++)
-        std::cout << "───" << cross_mid;
-      std::cout << "───" << horizontal_end << "\n ";
+      for (int j = 0; j < 5; j++)
+        std::cout << corner_bl << "───" << corner_br;
+      std::cout << "\n ";
+      for (int j = 0; j < 5; j++)
+        std::cout << corner_tl << "───" << corner_tr;
+      std::cout << "\n ";
     }
   }
 
   // bottom border
-  std::cout << corner_bl;
-  for (int i = 0; i < 4; i++)
-    std::cout << "───" << cross_bot;
-  std::cout << "───" << corner_br << "\n";
-
+  for (int i = 0; i < 5; i++)
+    std::cout << corner_bl << "───" << corner_br;
+  std::cout << "\n";
   print_keyboard();
 }
