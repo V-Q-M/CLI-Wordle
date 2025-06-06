@@ -1,42 +1,59 @@
-# Compiler and flags
+# Compiler and flags for Linux
 CXX := g++
+CXXFLAGS := -O2 -Wall
 
-# Libraries to link
+# Compiler and flags for Windows (MinGW)
+MINGW_CXX := x86_64-w64-mingw32-g++
+MINGW_CXXFLAGS := -O2 -Wall
+#MINGW_CXXFLAGS := -O2 -Wall -static -static-libgcc -static-libstdc++
+# Libraries to link (add -l flags if needed)
 LIBS := 
 
 # Source files
-SRCS := src/main.cpp src/utils.cpp src/terminal_input.cpp src/word_machine.cpp src/visuals.cpp  src/game.cpp include/main.h include/utils.h include/terminal_input.h include/word_machine.h include/visuals.h include/game.h
+SRCS := src/main.cpp src/utils.cpp src/terminal_input.cpp src/word_machine.cpp src/visuals.cpp src/game.cpp
+HDRS := include/main.h include/utils.h include/terminal_input.h include/word_machine.h include/visuals.h include/game.h
 
-# Build directory
-BUILD_DIR := build
+# Build directories
+BUILD_DIR_LINUX := build/linux
+BUILD_DIR_WIN := build/win
 
-# Object files (place in build/)
-OBJS := $(patsubst src/%.cpp,$(BUILD_DIR)/%.o,$(filter %.cpp,$(SRCS))) \
-        $(patsubst libs/%.c,$(BUILD_DIR)/%.o,$(filter %.c,$(SRCS)))
+# Object files for Linux
+OBJS := $(patsubst src/%.cpp,$(BUILD_DIR_LINUX)/%.o,$(SRCS))
 
-# Target executable
-TARGET := $(BUILD_DIR)/cli-wordle
+# Object files for Windows
+OBJS_WIN := $(patsubst src/%.cpp,$(BUILD_DIR_WIN)/%.o,$(SRCS))
 
+# Targets
+TARGET := $(BUILD_DIR_LINUX)/cli-wordle
+TARGET_WIN := $(BUILD_DIR_WIN)/cli-wordle.exe
+
+# Default: build Linux executable
 all: $(TARGET)
 
-# Link the final executable
-$(TARGET): $(OBJS)
+# Linux build
+$(TARGET): $(OBJS) | $(BUILD_DIR_LINUX)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LIBS)
 
-# Compile C++ source files to object files and emit assembly
-$(BUILD_DIR)/%.o: src/%.cpp | $(BUILD_DIR)
+$(BUILD_DIR_LINUX)/%.o: src/%.cpp | $(BUILD_DIR_LINUX)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Compile C source files to object files
-$(BUILD_DIR)/%.o: libs/%.c | $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(BUILD_DIR_LINUX):
+	mkdir -p $(BUILD_DIR_LINUX)
 
-# Create build directory if it doesn't exist
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+# Windows build using MinGW
+win: $(TARGET_WIN)
 
+$(TARGET_WIN): $(OBJS_WIN) | $(BUILD_DIR_WIN)
+	$(MINGW_CXX) $(MINGW_CXXFLAGS) $^ -o $@ $(LIBS)
 
+$(BUILD_DIR_WIN)/%.o: src/%.cpp | $(BUILD_DIR_WIN)
+	$(MINGW_CXX) $(MINGW_CXXFLAGS) -c $< -o $@
+
+$(BUILD_DIR_WIN):
+	mkdir -p $(BUILD_DIR_WIN)
+
+# Clean both builds
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR_LINUX) $(BUILD_DIR_WIN)
 
-.PHONY: all clean
+.PHONY: all clean win
