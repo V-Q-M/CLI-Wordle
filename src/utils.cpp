@@ -1,9 +1,6 @@
 #include "../include/utils.h"
 #include <cstdlib> // for system()
-#include <iostream>
-#include <regex> //
-#include <termios.h>
-#include <unistd.h>
+#include <regex>   //
 //
 //
 // Define the constants

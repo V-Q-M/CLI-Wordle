@@ -15,7 +15,7 @@
 #include "../include/main.h"
 #include "../include/game.h"
 #include "../include/terminal_input.h"
-#include "../include/utils.h"
+// #include "../include/utils.h"
 #include <iostream>
 
 int main() {

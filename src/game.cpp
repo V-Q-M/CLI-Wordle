@@ -12,7 +12,7 @@ const int acceptableWordsLen = 5;
 const int possibleAnswersLen = 2;
 
 int word_position = 0;
-
+bool won = false;
 std::string solution;
 
 std::string enteredWords[6][5];
@@ -33,6 +33,9 @@ void try_guess() {
     return;
   }
 
+  if (attempt == solution) {
+    won = true;
+  }
   // Track matched positions
   bool matchedSolution[5] = {false};
   bool matchedAttempt[5] = {false};
@@ -106,7 +109,7 @@ void setup_game() {
 }
 
 int check_game_over() {
-  if (attempt == solution) {
+  if (won) {
     clear_screen();
     print_board(enteredWords);
     std::cout << "You won!\n";
