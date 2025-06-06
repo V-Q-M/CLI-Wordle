@@ -32,7 +32,7 @@ void try_guess() {
   if (acceptableWords.count(attempt) == 0) {
     std::cout << "Invalid word. Try again.\n";
     attempt = "";
-    sleep(2);
+    sleep(1);
     return;
   }
 

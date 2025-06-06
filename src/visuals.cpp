@@ -1,24 +1,31 @@
 #include "../include/visuals.hpp"
 #include <iostream>
+
+#include <sys/ioctl.h>
+#include <unistd.h>
+
 const std::string vertical = "│";
 const std::string horizontal = "─";
 
+/*
 const std::string corner_tl = "┌";
 const std::string corner_tr = "┐";
 const std::string corner_bl = "└";
 const std::string corner_br = "┘";
-/*
+                                */
 const std::string corner_tl = "╭"; // top-left
 const std::string corner_tr = "╮"; // top-right
 const std::string corner_bl = "╰"; // bottom-left
 const std::string corner_br = "╯"; // bottom-right
-                                */
 const std::string cross_top = "┬";
 const std::string cross_mid = "┼";
 const std::string cross_bot = "┴";
 const std::string vertical_sep = "│";
 const std::string horizontal_sep = "├";
 const std::string horizontal_end = "┤";
+
+std::string top_margin = "\n";
+std::string left_margin = "  ";
 
 std::vector<std::string> keys = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O",
                                  "P", "A", "S", "D", "F", "G", "H", "J", "K",
@@ -54,34 +61,59 @@ std::string paint_grey(std::string letter) {
   return "\033[90m" + letter + "\033[0m"; // Gray
 }
 
+void resize_window() {
+  struct winsize w;
+
+  if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == -1) {
+    std::cerr << "Failed to get terminal size.\n";
+  }
+
+  //  std::cout << "Terminal width: " << w.ws_col << " columns\n";
+  //  std::cout << "Terminal height: " << w.ws_row << " rows\n";
+
+  top_margin = "";
+  for (int i = 0; i < w.ws_row / 4; i++) {
+    top_margin += '\n';
+  }
+
+  left_margin = "";
+  for (int i = 0; i < w.ws_col / 2 - 12; i++) {
+    left_margin += ' ';
+  }
+}
+
 void print_keyboard() {
-  std::cout << "  " << corner_tl + "─────────────────────" + corner_tr;
-  //  std::cout << corner_tl << horizontal << corner_tr << "\n";
-  std::cout << '\n' << "  " << vertical + " ";
+  std::cout << left_margin + ' '
+            << corner_tl + "─────────────────────" + corner_tr;
+  std::cout << '\n' << left_margin + ' ' << vertical + " ";
   for (int i = 0; i < 26; i++) {
     if (i == 10) {
-      std::cout << "" << vertical << "\n  " + vertical + "  ";
-      //     std::cout << corner_bl << horizontal << corner_br << "\n";
+      std::cout << vertical << "\n";
+      std::cout << left_margin + ' ' << vertical + "  ";
+
     } else if (i == 19) {
-      std::cout << " " + vertical << "\n  " + vertical + "    ";
+      std::cout << " " + vertical << "\n";
+      std::cout << left_margin + ' ' << vertical + "    ";
     }
-    // std::cout << vertical << " " << keys[i] << " " << vertical << ' ';
     std::cout << keys[i] << ' ';
   }
   std::cout << "   " + vertical << '\n';
-  std::cout << "  " << corner_bl + "─────────────────────" + corner_br << '\n';
+  std::cout << left_margin + ' '
+            << corner_bl + "─────────────────────" + corner_br << '\n';
 }
 
 void print_board(std::string entered_words[6][5]) {
+  resize_window();
+  // top margin
+  std::cout << top_margin;
   // top border
-  std::cout << " ";
+  std::cout << left_margin;
   for (int i = 0; i < 5; i++)
     std::cout << corner_tl << "───" << corner_tr;
   std::cout << "\n ";
 
   // rows
   for (int i = 0; i < 6; i++) {
-    // std::cout << vertical;
     for (int j = 0; j < 5; j++) {
       std::string cell = entered_words[i][j];
       std::cout << vertical << " " << (cell.empty() ? " " : cell) << " "

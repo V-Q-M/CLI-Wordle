@@ -45,7 +45,7 @@ int update_input() {
         current_key = 0;
       }
 
-      if (current_key == '/') { // exit signal
+      if (vk == VK_ESCAPE) { // exit signal
         return 0;
       }
 
@@ -83,7 +83,7 @@ void setup_input() { setRawMode(true); }
 
 int update_input() {
   current_key = getchar();
-  if (current_key == '/') { // signal exit
+  if (current_key == 27) { // signal exit
     return 0;
   }
 
