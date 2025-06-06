@@ -1,6 +1,6 @@
 # CLI-WORDLE in C++
 
-A terminal-based version of _Wordle_, written entirely in _C++_.
+A terminal-based version of **Wordle**, written entirely in **C++**.
 
 ## Installation
 
