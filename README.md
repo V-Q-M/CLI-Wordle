@@ -11,7 +11,7 @@ Download the binary of your choice, make it executable with
 and run it with
 
 ```
-./Wordle.exe
+./cli-wordle.exe
 ```
 
 ### Linux
@@ -19,13 +19,13 @@ and run it with
 Download the binary of your choice, make it runnable with
 
 ```
-chmod +x Wordle
+chmod +x cli-wordle
 ```
 
 and run it with
 
 ```
-./Wordle
+./cli-wordle
 ```
 
 Alternatively clone the repo with
@@ -43,5 +43,5 @@ make
 Then start the game with
 
 ```
-./build/Wordle
+./build/cli-wordle
 ```
