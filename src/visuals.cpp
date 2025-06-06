@@ -55,18 +55,21 @@ std::string paint_grey(std::string letter) {
 }
 
 void print_keyboard() {
-  std::cout << corner_tl + "─────────────────────" + corner_tr;
-  std::cout << '\n' << vertical + " ";
+  std::cout << "  " << corner_tl + "─────────────────────" + corner_tr;
+  //  std::cout << corner_tl << horizontal << corner_tr << "\n";
+  std::cout << '\n' << "  " << vertical + " ";
   for (int i = 0; i < 26; i++) {
     if (i == 10) {
-      std::cout << vertical << '\n' + vertical + "  ";
+      std::cout << "" << vertical << "\n  " + vertical + "  ";
+      //     std::cout << corner_bl << horizontal << corner_br << "\n";
     } else if (i == 19) {
-      std::cout << " " + vertical << '\n' + vertical + "    ";
+      std::cout << " " + vertical << "\n  " + vertical + "    ";
     }
+    // std::cout << vertical << " " << keys[i] << " " << vertical << ' ';
     std::cout << keys[i] << ' ';
   }
   std::cout << "   " + vertical << '\n';
-  std::cout << corner_bl + "─────────────────────" + corner_br << '\n';
+  std::cout << "  " << corner_bl + "─────────────────────" + corner_br << '\n';
 }
 
 void print_board(std::string entered_words[6][5]) {

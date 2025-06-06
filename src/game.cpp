@@ -8,6 +8,9 @@
 #include <unistd.h> // For usleep
 // WORDLE
 
+int MAX_LENGTH = 5;
+int MAX_WORDS = 6;
+
 const int acceptableWordsLen = 5;
 const int possibleAnswersLen = 2;
 
