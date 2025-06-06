@@ -1,8 +1,10 @@
 #include "../include/visuals.hpp"
+#include "../include/game.hpp"
 #include <iostream>
 
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <vector>
 
 const std::string vertical = "│";
 const std::string horizontal = "─";
@@ -102,10 +104,18 @@ void print_keyboard() {
             << corner_bl + "─────────────────────" + corner_br << '\n';
 }
 
-void print_board(std::string entered_words[6][5]) {
+void print_board(std::string entered_words[6][5], int game_state_code) {
   resize_window();
   // top margin
   std::cout << top_margin;
+
+  if (game_state_code == 1) {
+    std::cout << left_margin << "   You won!" << '\n';
+  } else if (game_state_code == 2) {
+    std::cout << left_margin << "  The word was: " << get_solution() << '\n';
+  }
+
+  /*
   // top border
   std::cout << left_margin;
   for (int i = 0; i < 5; i++)
@@ -135,5 +145,28 @@ void print_board(std::string entered_words[6][5]) {
   for (int i = 0; i < 5; i++)
     std::cout << corner_bl << "───" << corner_br;
   std::cout << "\n";
+*/
+  for (int i = 0; i < 6; i++) {
+    std::cout << left_margin;
+    for (int w = 0; w < 5; w++)
+      // top part
+      std::cout << corner_tl << "───" << corner_tr;
+    std::cout << '\n';
+    std::cout << left_margin;
+    // middle part
+    for (int j = 0; j < 5; j++) {
+      std::string cell = entered_words[i][j];
+      std::cout << vertical << " " << (cell.empty() ? " " : cell) << " "
+                << vertical;
+    }
+    std::cout << '\n';
+    std::cout << left_margin;
+
+    // bottom part
+    for (int k = 0; k < 5; k++)
+      std::cout << corner_bl << "───" << corner_br;
+    std::cout << '\n';
+  }
+
   print_keyboard();
 }

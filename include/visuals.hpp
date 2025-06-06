@@ -1,8 +1,6 @@
 #ifndef VISUALS_H
 #define VISUALS_H
 #include <string>
-#include <vector>
-
 std::string paint_yellow(std::string letter);
 std::string paint_green(std::string letter);
 std::string paint_grey(std::string letter);
@@ -22,5 +20,5 @@ extern const std::string horizontal_end;
 
 void print_keyboard();
 
-void print_board(std::string entered_words[6][5]);
+void print_board(std::string entered_words[6][5], int game_state_code);
 #endif

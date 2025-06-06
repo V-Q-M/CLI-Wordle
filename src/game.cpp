@@ -109,6 +109,8 @@ void handle_input() {
   }
 }
 
+std::string get_solution() { return solution; }
+
 void setup_game() {
   solution = random_word();
   // intialize the board with one space
@@ -119,15 +121,18 @@ void setup_game() {
   }
 }
 
+int won_code = 1;
+int lost_code = 2;
+
 int check_game_over() {
   if (won) {
     clear_screen();
-    print_board(enteredWords);
+    print_board(enteredWords, won_code);
     std::cout << "You won!\n";
     return 0;
   } else if (attemptCount == 6) {
     clear_screen();
-    print_board(enteredWords);
+    print_board(enteredWords, lost_code);
     std::cout << "You lost! The answer was: " << solution << "\n";
     return 0;
   }
@@ -136,10 +141,10 @@ int check_game_over() {
 
 int update_game() {
   clear_screen();
-  print_board(enteredWords);
+  print_board(enteredWords, 0);
   handle_input();
   clear_screen();
-  print_board(enteredWords);
+  print_board(enteredWords, 0);
 
   return check_game_over();
 }
