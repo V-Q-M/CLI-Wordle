@@ -1,4 +1,4 @@
-#include "../include/terminal_input.h"
+#include "../include/terminal_input.hpp"
 #include <iostream>
 
 #ifdef _WIN32

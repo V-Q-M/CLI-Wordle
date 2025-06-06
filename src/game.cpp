@@ -1,7 +1,7 @@
-#include "../include/terminal_input.h"
-#include "../include/utils.h"
-#include "../include/visuals.h"
-#include "../include/word_machine.h"
+#include "../include/terminal_input.hpp"
+#include "../include/utils.hpp"
+#include "../include/visuals.hpp"
+#include "../include/word_machine.hpp"
 #include <cctype>
 #include <iostream>
 #include <string>

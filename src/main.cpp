@@ -12,10 +12,10 @@
  *  - terminal_input.h: handles raw terminal mode and key detection
  *  - utils.h: general-purpose utility functions
  */
-#include "../include/main.h"
-#include "../include/game.h"
-#include "../include/terminal_input.h"
-// #include "../include/utils.h"
+#include "../include/main.hpp"
+#include "../include/game.hpp"
+#include "../include/terminal_input.hpp"
+// #include "../include/utils.hpp"
 #include <iostream>
 
 int main() {

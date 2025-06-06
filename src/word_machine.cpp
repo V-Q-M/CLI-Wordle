@@ -1,4 +1,4 @@
-#include "../include/word_machine.h"
+#include "../include/word_machine.hpp"
 #include <iostream>
 #include <random>
 // clang-format off

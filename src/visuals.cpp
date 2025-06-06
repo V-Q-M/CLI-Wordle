@@ -1,4 +1,4 @@
-#include "../include/visuals.h"
+#include "../include/visuals.hpp"
 #include <iostream>
 const std::string vertical = "│";
 const std::string horizontal = "─";
