@@ -37,8 +37,8 @@ std::string clean_keys = "QWERTYUIOPASDFGHJKLZXCVBNM";
 
 void paint_keys(std::string letter, std::string color) {
   for (int i = 0; i < 26; i++) {
-    if (keys[i] == letter) {
-      keys[i] = paint(keys[i], color);
+    if (std::string(1, clean_keys[i]) == letter) {
+      keys[i] = paint(std::string(1, clean_keys[i]), color);
     }
   }
 }
@@ -184,7 +184,7 @@ void print_board(std::string entered_words[6][5], int game_state_code) {
   std::cout << top_margin;
 
   if (game_state_code == 1) {
-    std::cout << left_margin << "        You won!" << '\n';
+    std::cout << left_margin << "         You won!" << '\n';
   } else if (game_state_code == 2) {
     std::cout << left_margin << "  The word was: " << get_solution() << '\n';
   }
