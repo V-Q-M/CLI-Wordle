@@ -22,7 +22,7 @@
 
 int main() {
   setup_input();
-  setup_game();
+  setup_game(5);
 
   while (true) {
     if (update_game() == 0) {

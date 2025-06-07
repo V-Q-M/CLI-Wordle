@@ -2,6 +2,7 @@
 #include "../include/game.hpp"
 #include "../include/utils.hpp"
 #include "../include/word_machine.hpp"
+#include <ios>
 #include <iostream>
 
 const std::string vertical = "│";
@@ -23,6 +24,9 @@ const std::string cross_bot = "┴";
 const std::string vertical_sep = "│";
 const std::string horizontal_sep = "├";
 const std::string horizontal_end = "┤";
+
+int show_invalid_word_msg_for = 0;
+int show_invalid_length_msg_for = 0;
 
 std::vector<std::string> keys = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O",
                                  "P", "A", "S", "D", "F", "G", "H", "J", "K",
@@ -122,10 +126,25 @@ void bottom_part(int i) {
   std::cout << '\n';
 }
 
-int show_invalid_word_msg_for = 0;
-int show_invalid_length_msg_for = 0;
+void print_menu() {
+  std::cout << "\n\n\n\n";
+  std::cout << left_margin
+            << corner_tl + "────────────────────────────────" + corner_tr
+            << '\n';
+  std::cout << left_margin
+            << vertical + "            OPTIONS             " + vertical << '\n';
+  std::cout << left_margin
+            << vertical + " Press 1. Start 5 letter Wordle " + vertical << '\n';
+  std::cout << left_margin
+            << vertical + " Press 2. Start 6 letter Wordle " + vertical << '\n';
+  std::cout << left_margin
+            << vertical + " Press 3. Start 7 letter Wordle " + vertical << '\n';
 
-// void print_board(std::string entered_words[6][5], int game_state_code) {
+  std::cout << left_margin
+            << corner_bl + "────────────────────────────────" + corner_br
+            << '\n';
+}
+
 void print_board(std::vector<std::vector<std::string>> entered_words,
                  int game_state_code) {
   resize_window();
@@ -147,7 +166,7 @@ void print_board(std::vector<std::vector<std::string>> entered_words,
       show_invalid_word_msg_for++;
     }
   } else if (invalid_length_msg) {
-    std::cout << left_margin << word_size_offset << "     Attempt to short."
+    std::cout << left_margin << word_size_offset << "    Attempt to short."
               << '\n';
     if (show_invalid_length_msg_for == 1) {
       invalid_length_msg = false;
@@ -155,19 +174,22 @@ void print_board(std::vector<std::vector<std::string>> entered_words,
     } else {
       show_invalid_length_msg_for++;
     }
+  } else if (show_menu) {
+    print_menu();
   } else {
     std::cout << '\n'; // To block weird shifts when text is actually shown
   }
+  if (!show_menu) {
+    for (int i = 0; i < AMOUNT_OF_WORDS; i++) {
+      std::cout << left_margin;
+      // top part
+      top_part(i);
+      // middle part
+      middle_part(entered_words, i);
+      // bottom part
+      bottom_part(i);
+    }
 
-  for (int i = 0; i < AMOUNT_OF_WORDS; i++) {
-    std::cout << left_margin;
-    // top part
-    top_part(i);
-    // middle part
-    middle_part(entered_words, i);
-    // bottom part
-    bottom_part(i);
+    print_keyboard();
   }
-
-  print_keyboard();
 }

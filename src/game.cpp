@@ -21,12 +21,9 @@ bool lost = false;
 
 std::string solution;
 // Stores the letters which get visualized
-// std::string enteredWords[6][5];
-
 std::vector<std::vector<std::string>> enteredWords;
 
 // Array needed for colorization
-// int letter_color[6][5];
 std::vector<std::vector<int>> letter_color;
 
 std::string attempt = "";
@@ -40,6 +37,7 @@ constexpr int GREY_ID = 3;
 
 bool invalid_word_msg = false;
 bool invalid_length_msg = false;
+bool show_menu = false;
 
 void try_guess() {
   //
@@ -51,7 +49,6 @@ void try_guess() {
     }
   }
   if (WORD_LENGTH == 5) {
-
     if (acceptableWords5.count(attempt) == 0) {
       invalid_word_msg = true;
       attempt = "";
@@ -59,14 +56,12 @@ void try_guess() {
     }
 
   } else if (WORD_LENGTH == 6) {
-
     if (acceptableWords6.count(attempt) == 0) {
       invalid_word_msg = true;
       attempt = "";
       return;
     }
   } else if (WORD_LENGTH == 7) {
-
     if (acceptableWords7.count(attempt) == 0) {
       invalid_word_msg = true;
       attempt = "";
@@ -131,6 +126,14 @@ void handle_input() {
     }
   }
 
+  if (current_key == 32) {
+    current_key = 0; // reset key to not trigger spam
+    word_position++;
+    if (word_position < WORD_LENGTH) {
+      enteredWords[attempt_counter][word_position] = '_';
+    }
+  }
+
   if (backspace_pressed) {
     backspace_pressed = false; // reset immediately
     if (word_position > 0) {
@@ -150,12 +153,42 @@ void handle_input() {
       invalid_length_msg = true;
     }
   }
+  // TOGGLE MENU
+  if (tab_pressed) {
+    if (show_menu) {
+      tab_pressed = false;
+      show_menu = false;
+    } else if (!show_menu) {
+      tab_pressed = false;
+      show_menu = true;
+    }
+  }
+  // MENU
+  if (show_menu) {
+    if (current_key == 49) {
+      setup_game(5);
+    }
+    if (current_key == 50) {
+      setup_game(6);
+    }
+    if (current_key == 51) {
+      setup_game(7);
+    }
+  }
 }
 
 std::string get_solution() { return solution; }
 
-void setup_game() {
+void setup_game(int word_mode) {
+  // reset everything
+  WORD_LENGTH = word_mode;
+
   solution = random_word();
+
+  word_position = 0;
+  attempt_counter = 0;
+
+  show_menu = false;
 
   enteredWords.resize(AMOUNT_OF_WORDS);
 
@@ -172,6 +205,7 @@ void setup_game() {
   for (int i = 0; i < AMOUNT_OF_WORDS; i++) {
     for (int j = 0; j < WORD_LENGTH; j++) {
       enteredWords[i][j] = " ";
+      letter_color[i][j] = 0;
     }
   }
 }

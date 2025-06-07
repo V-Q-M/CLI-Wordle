@@ -7,6 +7,7 @@
 char current_key = 0;
 bool enter_pressed = false;
 bool backspace_pressed = false;
+bool tab_pressed = false;
 
 static HANDLE hStdin = NULL;
 static DWORD oldMode = 0;
@@ -36,6 +37,8 @@ int update_input() {
       if (vk == VK_RETURN) {
         enter_pressed = true;
         current_key = '\n';
+      } else if (vk == VK_TAB) {
+        tab_pressed = true;
       } else if (vk == VK_BACK) {
         backspace_pressed = true;
         current_key = 8;
@@ -45,7 +48,7 @@ int update_input() {
         current_key = 0;
       }
 
-      if (vk == VK_ESCAPE) { // exit signal
+     if (vk == VK_ESCAPE) { // exit signal
         return 0;
       }
 
@@ -64,6 +67,7 @@ void close_input() { setRawMode(false); }
 char current_key = 0;
 bool enter_pressed = false;
 bool backspace_pressed = false;
+bool tab_pressed = false;
 
 static struct termios oldt;
 
@@ -85,16 +89,13 @@ int update_input() {
   current_key = getchar();
   if (current_key == 27) { // signal exit
     return 0;
-  }
-
-  if (current_key == 10 || current_key == 13) {
+  } else if (current_key == 9) {
+    tab_pressed = true;
+  } else if (current_key == 10 || current_key == 13) {
     enter_pressed = true;
-  }
-
-  if (current_key == 127 || current_key == 8) {
+  } else if (current_key == 127 || current_key == 8) {
     backspace_pressed = true;
   }
-
   return 69;
 }
 
