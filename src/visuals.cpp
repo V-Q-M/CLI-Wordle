@@ -1,8 +1,8 @@
 #include "../include/visuals.hpp"
 #include "../include/game.hpp"
 #include "../include/utils.hpp"
+#include "../include/word_machine.hpp"
 #include <iostream>
-#include <vector>
 
 const std::string vertical = "│";
 const std::string horizontal = "─";
@@ -38,27 +38,27 @@ void paint_keys(std::string letter, std::string color) {
 }
 
 void print_keyboard() {
-  std::cout << left_margin + ' '
+  std::cout << word_size_offset << left_margin + ' '
             << corner_tl + "─────────────────────" + corner_tr;
-  std::cout << '\n' << left_margin + ' ' << vertical + " ";
+  std::cout << '\n' << word_size_offset << left_margin + ' ' << vertical + " ";
   for (int i = 0; i < 26; i++) {
     if (i == 10) {
       std::cout << vertical << "\n";
-      std::cout << left_margin + ' ' << vertical + "  ";
+      std::cout << word_size_offset << left_margin + ' ' << vertical + "  ";
 
     } else if (i == 19) {
       std::cout << " " + vertical << "\n";
-      std::cout << left_margin + ' ' << vertical + "    ";
+      std::cout << word_size_offset << left_margin + ' ' << vertical + "    ";
     }
     std::cout << keys[i] << ' ';
   }
   std::cout << "   " + vertical << '\n';
-  std::cout << left_margin + ' '
+  std::cout << word_size_offset << left_margin + ' '
             << corner_bl + "─────────────────────" + corner_br << '\n';
 }
 
 void top_part(int i) {
-  for (int j = 0; j < 5; j++) {
+  for (int j = 0; j < WORD_LENGTH; j++) {
     switch (letter_color[i][j]) {
     case 1:
       std::cout << paint(corner_tl + "───" + corner_tr, GREEN);
@@ -77,9 +77,9 @@ void top_part(int i) {
   std::cout << left_margin;
 }
 
-void middle_part(std::string entered_words[6][5], int i) {
+void middle_part(std::vector<std::vector<std::string>> entered_words, int i) {
 
-  for (int j = 0; j < 5; j++) {
+  for (int j = 0; j < WORD_LENGTH; j++) {
     std::string cell = entered_words[i][j];
     switch (letter_color[i][j]) {
     case 1:
@@ -104,7 +104,7 @@ void middle_part(std::string entered_words[6][5], int i) {
 
 void bottom_part(int i) {
 
-  for (int j = 0; j < 5; j++) {
+  for (int j = 0; j < WORD_LENGTH; j++) {
     switch (letter_color[i][j]) {
     case 1:
       std::cout << paint(corner_bl + "───" + corner_br, GREEN);
@@ -125,17 +125,21 @@ void bottom_part(int i) {
 int show_invalid_word_msg_for = 0;
 int show_invalid_length_msg_for = 0;
 
-void print_board(std::string entered_words[6][5], int game_state_code) {
+// void print_board(std::string entered_words[6][5], int game_state_code) {
+void print_board(std::vector<std::vector<std::string>> entered_words,
+                 int game_state_code) {
   resize_window();
   // top margin
   std::cout << top_margin;
 
   if (game_state_code == 1) {
-    std::cout << left_margin << "         You won!" << '\n';
+    std::cout << left_margin << word_size_offset << "         You won!" << '\n';
   } else if (game_state_code == 2) {
-    std::cout << left_margin << "   The word was: " << get_solution() << '\n';
+    std::cout << left_margin << word_size_offset
+              << "   The word was: " << get_solution() << '\n';
   } else if (invalid_word_msg) {
-    std::cout << left_margin << " Invalid word. Try again.\n";
+    std::cout << left_margin << word_size_offset
+              << " Invalid word. Try again.\n";
     if (show_invalid_word_msg_for == 1) {
       invalid_word_msg = false;
       show_invalid_word_msg_for = 0;
@@ -143,7 +147,8 @@ void print_board(std::string entered_words[6][5], int game_state_code) {
       show_invalid_word_msg_for++;
     }
   } else if (invalid_length_msg) {
-    std::cout << left_margin << "  Attempt to short.\n";
+    std::cout << left_margin << word_size_offset << "     Attempt to short."
+              << '\n';
     if (show_invalid_length_msg_for == 1) {
       invalid_length_msg = false;
       show_invalid_length_msg_for = 0;
@@ -154,7 +159,7 @@ void print_board(std::string entered_words[6][5], int game_state_code) {
     std::cout << '\n'; // To block weird shifts when text is actually shown
   }
 
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < AMOUNT_OF_WORDS; i++) {
     std::cout << left_margin;
     // top part
     top_part(i);

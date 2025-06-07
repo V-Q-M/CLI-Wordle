@@ -1,6 +1,7 @@
 #ifndef VISUALS_H
 #define VISUALS_H
 #include <string>
+#include <vector>
 
 extern const std::string vertical;
 extern const std::string horizontal;
@@ -17,5 +18,6 @@ extern const std::string horizontal_end;
 
 void print_keyboard();
 
-void print_board(std::string entered_words[6][5], int game_state_code);
+void print_board(std::vector<std::vector<std::string>> entered_words,
+                 int game_state_code);
 #endif
