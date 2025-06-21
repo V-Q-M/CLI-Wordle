@@ -126,7 +126,7 @@ void handle_input() {
     }
   }
 
-  if (current_key == 32) {
+  if (current_key == 32 && word_position < WORD_LENGTH - 1) {
     current_key = 0; // reset key to not trigger spam
     word_position++;
     if (word_position < WORD_LENGTH) {
